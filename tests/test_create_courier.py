@@ -4,6 +4,7 @@ import allure
 from data import *
 from helps import CourierRegistration
 from generators import *
+from curl import *
 
 
 class TestCreateCourier:
@@ -20,7 +21,7 @@ class TestCreateCourier:
             assert created['response_status_code'] == 201
 
         with allure.step('Проверить тело ответа при создании'):
-            assert created['response_text'] == '{"ok":true}'
+            assert created['response_text'] == ErrorMessages.OK_TRUE
 
         # Дополнительно проверим, что можно залогиниться под этими данными
         with allure.step('Проверить логин созданного курьера'):
@@ -43,7 +44,7 @@ class TestCreateCourier:
             assert response.status_code == 409
 
         with allure.step('Проверить сообщение об ошибке'):
-            assert 'Этот логин уже используется' in response.text
+            assert ErrorMessages.LOGIN_ALREADY_EXISTS in response.text
 
     @allure.title('Тест на воспроизведения ошибки при создании курьера без заполнения обязательных полей')
     @allure.description('Отправляем POST-Запросы на регистрацию без заполнения обязательных полей')
@@ -59,4 +60,4 @@ class TestCreateCourier:
             assert response.status_code == 400
 
         with allure.step('Проверить сообщение об ошибке'):
-            assert 'Недостаточно данных для создания учетной записи' in response.text
+            assert ErrorMessages.NOT_ENOUGH_DATA_FOR_CREATE in response.text

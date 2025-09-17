@@ -1,6 +1,7 @@
 from generators import *
 import requests
 from data import *
+from curl import *
 
 
 class CourierRegistration:
